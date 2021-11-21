@@ -18,7 +18,7 @@ reye = cv2.CascadeClassifier('haar cascade files/haarcascade_righteye_2splits.xm
 
 lbl=['Close','Open']
 
-model = load_model('cnncat2.h5')
+model = load_model('cnnCat2.h5')
 path = os.getcwd()
 font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 count=0
