@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Driver Drowsiness Detection System</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+<style type="text/css">
+
+
+	
+
+/* button {
+    width: 150px;
+    padding: 10px;
+    display: block;
+    margin: 20px auto;
+    border: 2px solid #111111;
+    cursor: pointer;
+    background-color: white;
+} */
+
+#start-camera {
+    margin-top: 50px;
+}
+
+#video {
+    display: none;
+    margin: 50px auto 0 auto;
+}
+
+#start-record, #stop-record, #download-video{
+    display: none;
+}
+
+#download-video {
+    text-align: center;
+    margin: 20px 0 0 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+          <div class="container">
+            <a class="navbar-brand mr-4" href="/">Driver Drowsiness Detection System</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="/">Home</a>
+              </div>
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/about">About</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+<button  class="btn btn-outline-secondary" id="start-camera" style="position:absolute;left:44%; padding: 10px;margin: 20px auto;">Start Camera</button>
+<video id="video" width="320" height="240" autoplay></video>
+<button  class="btn btn-outline-secondary" id="start-record" style="position:absolute;left:44%; padding: 10px;margin: 20px auto;">Start Recording</button>
+<button  class="btn btn-outline-secondary" id="stop-record" style="position:absolute;left:44%; padding: 10px;margin: 20px auto;">Stop Recording</button>
+
+<a class="btn btn-outline-secondary" href="/convert" role="button" style="position:absolute;top:70%;left:65%;  width: 400px;" >Monitor the video</a>
+
+<a id="download-video" download="test.webm">Download Video</a>
+
+
+<ul style="position:absolute;top:22%;left:1%;  width: 400px;" >
+    <li><i>Record a video over here</i></li>
+    <li><i>After recording download the video</i></li>
+    <li><i>Further upload it on the 'convert' route</i></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<script>
+
+let camera_button = document.querySelector("#start-camera");
+let video = document.querySelector("#video");
+let start_button = document.querySelector("#start-record");
+let stop_button = document.querySelector("#stop-record");
+let download_link = document.querySelector("#download-video");
+
+let camera_stream = null;
+let media_recorder = null;
+let blobs_recorded = [];
+
+
+
+
+camera_button.addEventListener('click', async function() {
+   	try {
+    	camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    }
+    catch(error) {
+    	alert(error.message);
+    	return;
+    }
+
+    video.srcObject = camera_stream;
+    camera_button.style.display = 'none';
+    video.style.display = 'block';
+    start_button.style.display = 'block';
+});
+
+start_button.addEventListener('click', function() {
+    media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+
+    media_recorder.addEventListener('dataavailable', function(e) {
+    	blobs_recorded.push(e.data);
+    });
+
+    media_recorder.addEventListener('stop', function() {
+    	let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
+    	download_link.href = video_local;
+
+        stop_button.style.display = 'none';
+        download_link.style.display = 'block';
+    });
+
+    media_recorder.start(1000);
+
+    start_button.style.display = 'none';
+    stop_button.style.display = 'block';
+});
+
+stop_button.addEventListener('click', function() {
+	media_recorder.stop(); 
+});
+
+// blobs_recorded refers to recorded blobs array
+// let recording = new File(blobs_recorded, 'recording.webm', { type: 'video/webm' });
+// download_link.href = recording;
+// let data = new FormData();
+// data.append('file', recording);
+
+</script>
+
+ <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

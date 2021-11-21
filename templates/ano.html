@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+    <style type="text/css">
+
+body {
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #8E24AA, #b06ab3);
+    color: #D7D7EF;
+    font-family: 'Lato', sans-serif
+}
+
+h2 {
+    margin: 50px 0
+}
+
+.file-drop-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 450px;
+    max-width: 100%;
+    padding: 25px;
+    border: 1px dashed #5f788a;
+    border-radius: 3px;
+    transition: 0.2s
+}
+
+.choose-file-button {
+    flex-shrink: 0;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    padding: 8px 15px;
+    margin-right: 10px;
+    font-size: 12px;
+    text-transform: uppercase
+}
+
+.file-message {
+    font-size: small;
+    font-weight: 300;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0
+}
+
+.mt-100 {
+    margin-top: 100px
+}
+        
+        </style>
+<head>
+	  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+   
+     -->
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    
+	<title>Driver Drowsiness Detection System</title>
+</head>
+<body>
+	<header class="site-header">
+	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+	    <div class="container">
+	      <a class="navbar-brand mr-4" href="/">Driver Drowsiness Detection System</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="navbar-toggler-icon"></span>
+	      </button>
+	      <div class="collapse navbar-collapse" id="navbarToggle">
+	        <div class="navbar-nav mr-auto">
+	          <a class="nav-item nav-link" href="/">Home</a>
+	        </div>
+	        <!-- Navbar Right Side -->
+	        <div class="navbar-nav">
+	          <a class="nav-item nav-link" href="/about">About</a>
+	        </div>
+	      </div>
+	    </div>
+	  </nav>
+	</header>
+    <script type="text/javaScript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javaScript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).on('change', '.file-input', function() {
+
+
+        var filesCount = $(this)[0].files.length;
+
+        var textbox = $(this).prev();
+
+        if (filesCount === 1) {
+        var fileName = $(this).val().split('\\').pop();
+        textbox.text(fileName);
+        } else {
+        textbox.text(filesCount + ' files selected');
+        }
+        });
+    </script>
+
+
+
+
+
+	<div class="container" style="position:absolute;top:13%;left:6%;">
+        <form action="/convert" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>UPLOAD FILE</h4>
+                <div class="file-drop-area"> <span class="choose-file-button">Choose files</span> <span class="file-message">or drag and drop files here</span> <input class="file-input" name="video" id="video" type="file" multiple>
+                </div>
+            </div>
+        </div>
+        <!-- <br> -->
+        <button type="submit" class="btn btn-outline-secondary" style="position:absolute;top:105%;left:1%;" >Upload</button>
+
+    </form>
+    </div>
+
+
+    <ul style="position:absolute;top:20%;left:60%;  width: 400px;" >
+        <li><i>Upload a video file over here</i></li>
+        <li><i>Make sure your eyes and face are clearly visible</i></li>
+        <li><i>try to keep duration bw 10-20 seconds</i></li>
+    </ul>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+
+</body>
+</html>
