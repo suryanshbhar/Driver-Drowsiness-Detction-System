@@ -17,12 +17,14 @@ And 'MNIST' dataset has been used as training dataset for the CNN.<br>
 </ul>
 
 ## Flowchart Of Methodology
-![](screenshots/MNIST_flowchart.png)
+![](screenshots/drowsiness_flowchart.png)
 <br>
 <br>
 ## I/O screenshots
 ### Input
-![](screenshots/inp.PNG)
+![](screenshots/inp1.PNG)
+<br>
+![](screenshots/inp2.PNG)
 <br>
 
 ### Output
