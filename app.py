@@ -39,7 +39,7 @@ app=Flask(__name__)
 # with open('file.webm', 'rb') as f_vid:
 #     video_stream = base64.b64decode(f_vid.read())
 
-camera = cv2.VideoCapture()
+camera= cv2.VideoCapture('yo.webm')
 
 
 
